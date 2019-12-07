@@ -9,6 +9,8 @@ class Page { //classe de construção da página
 	private $tpl; //atributo do template
 	private $options = []; //atributo que recebe e exibe os dados
 	private $defaults = [ //atributo que é vázio por padrão, utilizado para o padrão
+		"header"=> true,
+		"footer"=> true,
 		"data" => []
 	];
 
@@ -34,7 +36,7 @@ class Page { //classe de construção da página
 
 		//colocando os dados e assinando os valores para serem exibidos
 
-		$this->tpl->draw("header");
+		if ($this->options["header"] === true) $this->tpl->draw("header");
 
 	}
 	private function setData($data = array())
@@ -55,7 +57,7 @@ class Page { //classe de construção da página
 
 	public function __destruct()
 	{
-		$this->tpl->draw("footer");
+		if ($this->options["footer"] === true) $this->tpl->draw("footer");
 
 	}
 }

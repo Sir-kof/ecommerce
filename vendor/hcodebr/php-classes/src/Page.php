@@ -12,14 +12,14 @@ class Page { //classe de construção da página
 		"data" => []
 	];
 
-	public function __construct($opts = array()) //função construtora da página
+	public function __construct($opts = array(), $tpl_dir = "/views/") //função construtora da página
 	{
 		/* atribuindo a junção de valores o padrão, que é um parâmetro, que também é um array de dados colocados pelo usuário */
 		$this->options = array_merge($this->defaults, $opts);
 
 		//configurando a rota do template
 		$config = array(
-			"tpl_dir"       => $_SERVER["DOCUMENT_ROOT"]."/views/",
+			"tpl_dir"       => $_SERVER["DOCUMENT_ROOT"].$tpl_dir,
 			"cache_dir"     => $_SERVER["DOCUMENT_ROOT"]."/views-cache/",
 			"debug"         => false // set to false to improve the speed
 		);

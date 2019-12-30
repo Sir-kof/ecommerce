@@ -40,7 +40,7 @@ class User extends Model
 		}
 	}
 
-	public static function verifyLogin()
+	public static function verifyLogin($inadmin = true)
 	{
 		if (
 			!isset($_SESSION[User::SESSION])
@@ -49,11 +49,29 @@ class User extends Model
 			||
 			!(int)$_SESSION[User::SESSION]["iduser"] > 0
 			||
-			(bool)$_SESSION[User::SESSION]["inadmin"] !== $inadmin
+			(bool)$_SESSION[User::SESSION]["iduser"] !== $inadmin
 		) {
+
 			header("Location: /admin/login");
 			exit;
+
 		}
+	}
+
+
+	public static function logout()
+	{
+
+		$_SESSION[User::SESSION] = NULL;
+
+	}
+
+	public static function listAll()
+	{
+		$sql = new Sql();
+
+		return $sql->select("SELECT * FROM tb_users INNER JOIN tb_persons b USING(idperson) ORDER BY b.desperson");
+
 	}
 
 }

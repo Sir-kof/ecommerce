@@ -16,7 +16,7 @@ $app = new \Slim\Slim();
 
 $app->config('debug', true);
 
-$app->get('/', function() {
+$app->get("/", function() {
     
 	$page = new Page();
 
@@ -24,7 +24,7 @@ $app->get('/', function() {
 
 });
 
-$app->get('/admin', function() {
+$app->get("/admin", function() {
 
 	User::verifyLogin();
     
@@ -34,7 +34,7 @@ $app->get('/admin', function() {
 
 });
 
-$app->get('/admin/login', function() {
+$app->get("/admin/login", function() {
     
 	$page = new PageAdmin([
 		"header"=>false,
@@ -45,7 +45,7 @@ $app->get('/admin/login', function() {
 
 });
 
-$app->post('/admin/login', function() {
+$app->post("/admin/login", function() {
     
 	User::login($_POST["login"], $_POST["password"]);
 
@@ -54,7 +54,7 @@ $app->post('/admin/login', function() {
 
 });
 
-$app->get('/admin/logout', function(){
+$app->get("/admin/logout", function(){
 
 	User::logout();
 
@@ -63,7 +63,7 @@ $app->get('/admin/logout', function(){
 
 });
 
-$app->get('/admin/users', function() {
+$app->get("/admin/users", function() {
 
 	User::verifyLogin();
 
@@ -152,6 +152,37 @@ $app->post("/admin/users/:iduser", function ($iduser){
 
 	header("Location: /admin/users");
 	exit;
+
+});
+
+$app->get("/admin/forgot", function() {
+    
+	$page = new PageAdmin([
+		"header"=>false,
+		"footer"=>false
+	]);
+
+	$page->setTpl("forgot");
+
+});
+
+$app->post("/admin/forgot", function(){
+
+	$user = User::getForgot($_POST["email"]);
+
+	header("Location: /admin/forgot/sent");
+	exit;
+
+});
+
+$app->get("/admin/forgot/sent", function(){
+
+	$page = new PageAdmin([
+		"header"=>false,
+		"footer"=>false
+	]);
+
+	$page->setTpl("forgot-sent");
 
 });
 

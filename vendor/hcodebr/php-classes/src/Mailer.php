@@ -4,8 +4,8 @@ use Rain\Tpl;
 use \PHPMailer; 
 class Mailer {
 	
-	const USERNAME = "email_from";
-	const PASSWORD = "senha_from";
+	const USERNAME = "desblockponto@gmail.com";
+	const PASSWORD = "1257Desblock";
 	const NAME_FROM = "Hcode Store";
 	private $mail;
 	public function __construct($toAddress, $toName, $subject, $tplName, $data = array())
@@ -15,11 +15,15 @@ class Mailer {
 			"cache_dir"     => $_SERVER["DOCUMENT_ROOT"]."/views-cache/",
 			"debug"         => false
 	    );
+
 		Tpl::configure( $config );
+
 		$tpl = new Tpl;
+
 		foreach ($data as $key => $value) {
 			$tpl->assign($key, $value);
 		}
+
 		$html = $tpl->draw($tplName, true);
 		$this->mail = new \PHPMailer;
 		//Tell PHPMailer to use SMTP
@@ -41,6 +45,13 @@ class Mailer {
 		// if your network does not support SMTP over IPv6
 		//Set the SMTP port number - 587 for authenticated TLS, a.k.a. RFC4409 SMTP submission
 		$this->mail->Port = 587;
+
+		$this->mail->SMTPOptions = array(
+		    'ssl' => array(
+		        'verify_peer' => false,
+		        'verify_peer_name' => false,
+		        'allow_self_signed' => true
+		));
 		//Set the encryption system to use - ssl (deprecated) or tls
 		$this->mail->SMTPSecure = 'tls';
 		//Whether to use SMTP authentication

@@ -30,6 +30,11 @@ class Product extends Model
 
 	}
 
+	public static function formatPrice()
+	{
+		
+	}
+
 	public function save()
 	{
 		$sql = new Sql();

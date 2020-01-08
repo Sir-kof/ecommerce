@@ -4,8 +4,8 @@ use Rain\Tpl;
 use \PHPMailer; 
 class Mailer {
 	
-	const USERNAME = "desblockponto@gmail.com";
-	const PASSWORD = "1257Desblock";
+	const USERNAME = "email_from";
+	const PASSWORD = "senha_from";
 	const NAME_FROM = "Hcode Store";
 	private $mail;
 	public function __construct($toAddress, $toName, $subject, $tplName, $data = array())

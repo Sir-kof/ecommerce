@@ -25,6 +25,8 @@ class User extends Model
 	}
 	public static function checkLogin($inadmin = true)
 	{
+		$inadmin = false;
+
 		if (
 			!isset($_SESSION[User::SESSION])
 			||
@@ -43,6 +45,7 @@ class User extends Model
 				return false;
 			}
 		}
+
 	}
 
 	public static function login($login, $password)
@@ -77,13 +80,12 @@ class User extends Model
 
 	public static function verifyLogin($inadmin = true)
 	{
-		if (User::checkLogin($inadmin)) {
+		if (!User::checkLogin($inadmin)) {
 
-				header("Location: /admin/login");
-				exit;
+			header("Location: /admin/login");
+			exit;
 
 		}
-
 	}
 
 
@@ -263,6 +265,5 @@ class User extends Model
 	}
 
 }
-
 
  ?>

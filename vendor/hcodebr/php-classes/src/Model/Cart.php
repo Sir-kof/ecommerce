@@ -9,6 +9,7 @@ use \Hcode\Model\User;
 use \Hcode\Model\Product;
 
 
+
 class Cart extends Model {
 
 	const SESSION = "Cart";

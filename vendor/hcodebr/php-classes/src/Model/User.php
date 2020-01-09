@@ -233,8 +233,11 @@ class User extends Model
 	public static function validForgotDecrypt($code)
 	{
 		$code = base64_decode($code);
+
 		$idrecovery = openssl_decrypt($code, 'AES-128-CBC', pack("a16", User::SECRET), 0, pack("a16", User::SECRET_IV));
+
 		$sql = new Sql();
+
 		$results = $sql->select("
 			SELECT *
 			FROM tb_userspasswordsrecoveries a
@@ -247,16 +250,22 @@ class User extends Model
 				AND
 				DATE_ADD(a.dtregister, INTERVAL 1 HOUR) >= NOW();
 		", array(
+
 			":idrecovery"=>$idrecovery
+
 		));
+
 		if (count($results) === 0)
 		{
+
 			throw new \Exception("Não foi possível recuperar a senha.");
-		}
-		else
-		{
+
+		} else {
+
 			return $results[0];
+
 		}
+		
 	}
 
 	public static function setForgotUsed($idrecovery)

@@ -142,6 +142,8 @@ class User extends Model
 			":iduser"=>$iduser
 		));
 
+		$data = $results[0];
+
 		$data['desperson'] = utf8_encode($data['desperson']);
 
 		$this->setData($results[0]);
@@ -210,8 +212,11 @@ class User extends Model
 				$code = openssl_encrypt($dataRecovery['idrecovery'], 'AES-128-CBC', pack("a16", User::SECRET), 0, pack("a16", User::SECRET_IV));
 				$code = base64_encode($code);
 				if ($inadmin === true) {
+
 					$link = "http://www.hcodecommerce.com.br/admin/forgot/reset?code=$code";
+
 				} else {
+
 					$link = "http://www.hcodecommerce.com.br/forgot/reset?code=$code";
 					
 				}				
@@ -368,7 +373,7 @@ class User extends Model
 		return password_hash($password, PASSWORD_DEFAULT, [
 			'cost'=>12
 		]);
-		
+
 	}
 
 }

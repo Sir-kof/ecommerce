@@ -167,6 +167,8 @@ class User extends Model
 
 		$this->setData($results[0]);
 
+		$_SESSION[User::USER_SESSION] = $this->getValues();
+
 	}
 
 	public function delete()
@@ -182,7 +184,9 @@ class User extends Model
 
 	public static function getForgot($email, $inadmin = true)
 	{
+
 		$sql = new Sql();
+
 		$results = $sql->select("
 			select *
 			from tb_persons a
@@ -191,26 +195,34 @@ class User extends Model
 		", array(
 			":email"=>$email
 		));
+
 		if (count($results) === 0)
 		{
+
 			throw new \Exception("Não foi possivel recuperar a senha.");
-		}
-		else
-		{
+
+		} else {
+
 			$data = $results[0];
+
 			$results2 = $sql->select("CALL sp_userspasswordsrecoveries_create(:iduser, :desip)", array(
 				":iduser"=>$data["iduser"],
 				":desip"=>$_SERVER["REMOTE_ADDR"]
 			));
+
 			if (count($results2) === 0)
 			{
+
 				throw new \Exception("Não foi possivel recuperar a senha(2).");
-			}
-			else
-			{
+
+			} else {
+
 				$dataRecovery = $results2[0];
+
 				$code = openssl_encrypt($dataRecovery['idrecovery'], 'AES-128-CBC', pack("a16", User::SECRET), 0, pack("a16", User::SECRET_IV));
+
 				$code = base64_encode($code);
+
 				if ($inadmin === true) {
 
 					$link = "http://www.hcodecommerce.com.br/admin/forgot/reset?code=$code";
@@ -220,14 +232,19 @@ class User extends Model
 					$link = "http://www.hcodecommerce.com.br/forgot/reset?code=$code";
 					
 				}				
+
 				$mailer = new Mailer($data['desemail'], $data['desperson'], "Redefinir senha da Hcode Store", "forgot", array(
 					"name"=>$data['desperson'],
 					"link"=>$link
-				));				
+				));			
+
 				$mailer->send();
+
 				return $link;
 			}
+
 		}
+		
 	}
 
 	public static function validForgotDecrypt($code)
@@ -382,6 +399,28 @@ class User extends Model
 		return password_hash($password, PASSWORD_DEFAULT, [
 			'cost'=>12
 		]);
+
+	}
+
+	public function getOrders()
+	{
+
+		$sql = new Sql();
+
+		$results = $sql->select("
+			SELECT * 
+			FROM tb_orders a 
+			INNER JOIN tb_ordersstatus b USING(idstatus) 
+			INNER JOIN tb_carts c USING(idcart)
+			INNER JOIN tb_users d ON d.iduser = a.iduser
+			INNER JOIN tb_addresses e USING(idaddress)
+			INNER JOIN tb_persons f ON f.idperson = d.idperson
+			WHERE a.iduser = :iduser
+		", [
+			':iduser'=>$this->getiduser()
+		]);
+
+		return $results;
 
 	}
 

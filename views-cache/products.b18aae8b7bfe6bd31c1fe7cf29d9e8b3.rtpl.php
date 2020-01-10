@@ -33,7 +33,7 @@
                     <th>Altura</th>
                     <th>Comprimento</th>
                     <th>Peso</th>
-                    <th style="width: 240px">&nbsp;</th>
+                    <th style="width: 140px">&nbsp;</th>
                   </tr>
                 </thead>
                 <tbody>
